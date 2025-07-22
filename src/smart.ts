@@ -154,12 +154,11 @@ import {
     return changesRequireRescheduling(task, changes);
   }
 
-  export function needsInitialScheduling(task: TaskSelect) {
-    const hasDateWithoutSpecificTime = task.startTime && isDateOnlyWithoutTime(task.startTime);
-    const hasDeadlineButNoStartTime = task.endTime && !task.startTime;
-
-    const needsScheduling = hasDateWithoutSpecificTime || hasDeadlineButNoStartTime;
-    return needsScheduling;
+  export function needsInitialScheduling(task: TaskSelect): boolean {
+    const hasDateWithoutSpecificTime = task.startTime ? isDateOnlyWithoutTime(task.startTime) : false;
+    const hasDeadlineButNoStartTime = !task.startTime && !!task.endTime;
+  
+    return hasDateWithoutSpecificTime || hasDeadlineButNoStartTime;
   }
 
   function requiresReschedulingDueToTimeChanges(changes: Partial<TaskBody>) {
