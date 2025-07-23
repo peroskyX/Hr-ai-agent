@@ -25,7 +25,7 @@ import './buffer-management.test.js';
 
 // Import test utilities for validation
 import { describe, it, expect } from 'vitest';
-import TestUtils from './test-utilitis.js';
+import TestUtils from './test-utilities.js';
 
 describe('Core Task Scheduling - Integration Tests', () => {
   describe('Cross-cutting Concerns', () => {
