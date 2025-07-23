@@ -540,12 +540,45 @@ export class TestAssertions {
   }
 }
 
+/**
+ * Creates a schedule item that also accepts TaskSelect properties
+ * This is useful for testing when you need schedule items with task-specific properties
+ */
+export function createTestScheduleItemWithTaskProperties(options: Partial<TaskSelect> & {
+  hoursFromNow?: number;
+  durationHours?: number;
+  type?: "task" | "event";
+} = {}): ScheduleItem & Partial<TaskSelect> {
+  const {
+    hoursFromNow = 1,
+    durationHours = 1,
+    ...overrides
+  } = options;
+
+  const startTime = addHours(new Date(), hoursFromNow);
+  const endTime = addHours(startTime, durationHours);
+
+  return {
+    id: `schedule-${Math.random().toString(36).substr(2, 9)}`,
+    type: "task",
+    title: "Test Schedule Item",
+    startTime,
+    endTime,
+    description: "",
+    status: "pending",
+    priority: 3, // Default priority for tasks
+    isAutoSchedule: true, // Default auto-schedule setting
+    ...overrides,
+  } as ScheduleItem & Partial<TaskSelect>;
+}
+
 export default {
   createTestTask,
   createTestEnergySlot,
   createTestScheduleItem,
   createTestHistoricalPatterns,
   createTestSchedulingContext,
+  createTestScheduleItemWithTaskProperties,
   validateScheduleBuffer,
   validateEnergyRequirements,
   validateNoScheduleConflicts,
